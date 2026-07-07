@@ -148,7 +148,8 @@ Copyright (c) 2011-2026 Mitsuhiro Hibara / HiBARA Software, LLC
 
 詳細は [LICENSE](LICENSE) を参照してください。
 
-「秀丸エディタ」は有限会社サイトー企画の製品です。本ソフトウェアは HiBARA Software, LLC が
+「<a href="https://hide.maruo.co.jp/software/hidemaru.html" target="_blank" rel="noopener noreferrer">秀丸エディタ</a>」
+は有限会社サイトー企画の製品です。本ソフトウェアは HiBARA Software, LLC が
 独自に配布するものであり、有限会社サイトー企画の公式製品ではありません。
 
 ---
