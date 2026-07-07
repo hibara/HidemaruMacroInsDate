@@ -1,0 +1,10 @@
+EXPORTS
+GetDateString=_GetDateString
+GetDateStringEn=_GetDateStringEn
+GetCreateDateString=_GetCreateDateString
+GetCreateDateStringEn=_GetCreateDateStringEn
+GetLastWriteDateString=_GetLastWriteDateString
+GetLastWriteDateStringEn=_GetLastWriteDateStringEn
+GetAccessDateString=_GetAccessDateString
+GetAccessDateStringEn=_GetAccessDateStringEn
+

@@ -1,0 +1,99 @@
+﻿//======================================================================
+//
+//  InsertDateListSample02.mac ― サンプル(2) 書式カタログ
+//
+//  この DLL で使える書式を一覧メニューにしたサンプルです。
+//  メニューには「実際に整形した結果」が並ぶので、好みの見た目を選んで
+//  そのまま挿入できます。使いたい書式を探す辞書として活用してください。
+//
+//  ▼書式トークンの早見表（詳しくは Help.txt）
+//    yyyy=4桁年  yy=2桁年   mm=2桁月  m=月    d=日   dd=2桁日
+//    ddd=曜日短縮(月)  dddd=曜日長(月曜日)   mmm/mmmm=月名(英語)
+//    gg=元号(令和)  e=元号年  ee=2桁元号年              ←和暦
+//    hh/h=時  nn/n=分  ss/s=秒   ampm=午前/午後  a/p=午前午後1文字
+//    ※上記トークン以外の文字（/ : ( ) 年 月 日 など）はそのまま出力
+//
+//  ※動作には付属の insdate32.dll / insdate64.dll が必要です。この2つの
+//    DLL と、実行するマクロ(.mac)は、同じフォルダ（秀丸のマクロフォルダ）に
+//    置いてください。
+//
+//  ※使い方の詳細（書式トークン一覧・関数リファレンス）は Help.txt にあります。
+//    Help.txt とライセンス(LICENSE)は、マクロ置き場ではなく、次のフォルダに
+//    入っています：
+//
+//        %LOCALAPPDATA%\HiBARA_Software\HidemaruInsDateMacro\
+//
+//    ↑このパスを、エクスプローラーのアドレス欄にそのまま貼り付けて Enter を
+//      押すと、そのフォルダを開けます（環境変数はエクスプローラーが自動展開）。
+//      展開例: C:\Users\<ユーザー名>\AppData\Local\HiBARA_Software\HidemaruInsDateMacro\
+//
+//======================================================================
+
+
+//----------------------------------------------------------------------
+// 秀丸のビット数(32/64)に合わせて DLL を選び、読み込む
+//----------------------------------------------------------------------
+$dllPath = currentmacrodirectory + "\\";
+if ((platform & 0x00080000) != 0) {
+    $dllPath = $dllPath + "insdate64.dll";   // 64bit版秀丸
+} else {
+    $dllPath = $dllPath + "insdate32.dll";   // 32bit版秀丸
+}
+
+if (!existfile($dllPath)) {
+    message "DLLが見つかりません。\n\n" + $dllPath;
+    endmacro;
+}
+
+#dll = loaddll($dllPath);
+if (#dll == 0) {
+    message "DLLのロードに失敗しました。\n\n" + $dllPath;
+    endmacro;
+}
+
+
+//----------------------------------------------------------------------
+// 書式カタログ（右コメントは 2026/07/06(月) 22:08:07 の場合の出力例）
+//   "\x01" は区切り線です。
+//----------------------------------------------------------------------
+// ■ 年月日（数字）
+$InsDate[0]  = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0 );            // 2026/07/06
+$InsDate[1]  = dllfuncstr( #dll, "GetDateString", "yy-mm-dd", 0 );              // 26-07-06
+$InsDate[2]  = dllfuncstr( #dll, "GetDateString", "yyyy年m月d日", 0 );          // 2026年7月6日
+$InsDate[3]  = "\x01";
+// ■ 曜日つき
+$InsDate[4]  = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0 );       // 2026/07/06(月)
+$InsDate[5]  = dllfuncstr( #dll, "GetDateString", "yyyy年mm月dd日(dddd)", 0 );   // 2026年07月06日(月曜日)
+$InsDate[6]  = "\x01";
+// ■ 和暦（元号）
+$InsDate[7]  = dllfuncstr( #dll, "GetDateString", "gge年m月d日", 0 );           // 令和8年7月6日
+$InsDate[8]  = dllfuncstr( #dll, "GetDateString", "gge年m月d日(dddd)", 0 );      // 令和8年7月6日(月曜日)
+$InsDate[9]  = dllfuncstr( #dll, "GetDateString", "ggee年mm月dd日", 0 );         // 令和08年07月06日
+$InsDate[10] = "\x01";
+// ■ 時刻
+$InsDate[11] = dllfuncstr( #dll, "GetDateString", "hh:nn:ss", 0 );              // 22:08:07
+$InsDate[12] = dllfuncstr( #dll, "GetDateString", "h時n分s秒", 0 );             // 22時8分7秒
+$InsDate[13] = dllfuncstr( #dll, "GetDateString", "ampm h時n分", 0 );           // 午後 0時8分  ←ampmは12時制
+$InsDate[14] = dllfuncstr( #dll, "GetDateString", "a/p hh:nn:ss", 0 );          // p 10:08:07
+$InsDate[15] = "\x01";
+// ■ 英語表記（GetDateStringEn）
+$InsDate[16] = dllfuncstr( #dll, "GetDateStringEn", "yyyy/mm/dd(ddd)", 0 );     // 2026/07/06(Mon)
+$InsDate[17] = dllfuncstr( #dll, "GetDateStringEn", "mmmm dd, yyyy", 0 );        // July 06, 2026
+$InsDate[18] = dllfuncstr( #dll, "GetDateStringEn", "ampm hh:nn:ss", 0 );        // PM 10:08:07
+$InsDate[19] = "\x01";
+// ■ 相対（日付をずらす）… 引数 年,月,日,時,分,秒 に増減を渡す
+$InsDate[20] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0, 0,  1 );      // 明日（+1日） 2026/07/07
+$InsDate[21] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0, 0, -1 );      // 昨日（-1日） 2026/07/05
+
+
+//----------------------------------------------------------------------
+// メニュー表示 → 選んだ書式の結果をそのまま挿入
+//----------------------------------------------------------------------
+menuarray $InsDate, 22;                       // ←並べた項目の数(22)を指定
+
+if ( result > 0 ) {
+    insert $InsDate[ result - 1 ];            // 配列は 0 始まりなので -1
+}
+
+freedll #dll;
+endmacro;

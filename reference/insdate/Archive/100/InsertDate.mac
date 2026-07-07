@@ -1,0 +1,26 @@
+//======================================================================
+// 
+// 日付時刻挿入マクロ（DLL付属拡張書式版）
+// 
+// ※このマクロを動作させるには付属のinsdate.dllが必要です。
+//   カスタマイズ方法や挿入日時の書式は、同梱のreadme.txtにあります。
+//   詳しくはそちらをご覧ください。
+// 
+//======================================================================
+
+#dll = loaddll("insdate.dll");
+if( #dll == 0 ) {
+	message "insdate.dllのロードに失敗しました。";
+	endmacro;
+}
+
+//今日の日付
+$InsDateString = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0);           //2011/04/20
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "GGe年m月d日　dddd", 0);  //平成23年4月20日　水曜日
+
+insert $InsDateString;
+
+freedll #dll;
+
+endmacro;
+

@@ -1,0 +1,25 @@
+# ビルド出力先(target)をローカルの C: ドライブに固定する。
+#
+# このプロジェクトは X:\ = \\Mac\Dropbox（Parallels 共有フォルダ, PrlSF）上にある。
+# 共有フォルダは rustc/LLVM が使う一時ディレクトリの削除・リネームを完全には
+# サポートせず、ビルドが os error 87 で失敗する。
+# そこで中間生成物・最終 DLL はローカル NTFS 上に出す。ソースの読み込みは X: のままでよい。
+[build]
+target-dir = "C:/Users/hibara/insdate2-build"
+
+# --- CRT を静的リンクする（DLL ハイジャック対策 & ランタイム完全非依存化）------
+# 既定では Rust の MSVC ターゲットは vcruntime140.dll / ucrtbase.dll を動的リンクする。
+# vcruntime140.dll は Windows の KnownDLLs に含まれない（＝呼び出し元プロセスのフォルダに
+# 偽 DLL を置くとそちらを掴む可能性がある）ため、CRT を DLL 内に静的リンクして
+# 外部依存を全てシステム DLL（KnownDLLs 対象）のみに限定する。
+#   参考: CLAUDE.md §1 「ランタイム完全非依存」方針
+#
+# 【重要】cargo の仕様上、環境変数 RUSTFLAGS がセットされているとここの
+# target.<triple>.rustflags は無視される。実運用のビルド (build.ps1) では
+# $env:RUSTFLAGS 側にも +crt-static を含めているのでそちらが効いている。
+# 以下の設定は、build.ps1 を経由せず素の `cargo build` を回した場合の保険。
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.i686-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

@@ -1,0 +1,80 @@
+MIT License
+
+Project:
+Date and Time Insertion Macro for Hidemaru Editor
+（秀丸エディタ用・日付時刻挿入マクロ）
+
+Copyright (c) 2011-2026 Mitsuhiro Hibara
+Distributed by HiBARA Software, LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+-------------------------------------------------------------------------------
+日本語参考訳
+-------------------------------------------------------------------------------
+
+以下の日本語訳は、利用者の理解を助けるための参考訳です。
+英語のMIT License本文と日本語訳の内容に相違がある場合は、
+英語のMIT License本文を優先します。
+
+対象ソフトウェア:
+秀丸エディタ用・日付時刻挿入マクロ
+（Date and Time Insertion Macro for Hidemaru Editor）
+
+著作権者:
+Copyright (c) 2011-2026 Mitsuhiro Hibara
+
+配布者:
+HiBARA Software, LLC
+
+本ソフトウェアおよび関連文書ファイル（以下「本ソフトウェア」）の
+複製を取得するすべての者に対し、本ソフトウェアを無制限に取り扱う
+ことを、無償で許可します。
+
+これには、本ソフトウェアを使用、複製、変更、結合、公開、配布、
+再許諾、および販売する権利、ならびに本ソフトウェアを提供された者に
+同様の行為を許可する権利を含みますが、これらに限定されません。
+
+ただし、次の条件に従うものとします。
+
+上記の著作権表示および本許諾表示を、本ソフトウェアのすべての複製
+または重要な部分に記載するものとします。
+
+本ソフトウェアは「現状のまま」で提供され、明示または黙示を問わず、
+商品性、特定目的への適合性、および権利非侵害についての保証を含む、
+いかなる保証もありません。
+
+作者または著作権者は、契約、不法行為、その他の法的根拠のいずれに
+基づく場合であっても、本ソフトウェアまたはその使用その他の取扱いに
+起因または関連して生じる、いかなる請求、損害、その他の責任も
+負いません。
+
+
+-------------------------------------------------------------------------------
+第三者の商標および製品について
+-------------------------------------------------------------------------------
+
+「秀丸エディタ」は有限会社サイトー企画の製品です。
+
+本ソフトウェアはHiBARA Software, LLCが独自に配布するものであり、
+有限会社サイトー企画の公式製品ではありません。
+
+秀丸エディタ本体の利用には、秀丸エディタ本体に適用される
+別途のライセンス条件が適用されます。

@@ -1,0 +1,366 @@
+﻿正規表現ライブラリ SkRegExp 更新履歴
+
+  1.3.1  2011/10/15
+    ・修正）グループ番号が範囲外だとアクセス違反が発生していたが、例外を発生させるように変更。
+    ・修正）グループ名が存在しないとアクセス違反が発生していたが、例外を発生させるように変更。
+    ・修正）ヘルプに存在しないトピックがあったのを追加。
+  1.3.0  2011/9/8
+    ・修正）再帰パターンのマッチ結果を TRegEx により近づけた。
+    ・新規）先読み/後読みを最適化。
+    ・新規）(?!) を最適化。
+    ・新規）デバッグ用に、マッチ経過を保持する TSkRegExp.FMatchProcess を追加。
+            この変更により、{$DEFINE DEBUG} 時のマッチ速度がさらに遅くなります。
+    ・新規）低レベルの文字列比較用に REStrLComp 関数と REStrLIComp 関数を追加。
+            ANSI Delphi と Unicode Delphi の違いはここで切り分けることにした。
+            これにより、ANSI Delphi での処理速度が少し速くなる。
+    ・変更）すべての文字列比較を REStrLComp と REStrLIComp を使って書き換えた。
+    ・変更）未使用のクラス、メソッドを削除。
+    ・変更）TREGroup, TREGroupCollection の名前をそれぞれ TGroup, TGroupCollection に変更し、
+            ヘルプで公開した。
+    ・変更）TSkRegExp.Groups プロパティをヘルプで公開した。
+    ・変更）グローバル関数はクラス関数を呼び出すように変更した。
+　1.2.6  2011/9/3
+    ・修正）Delphi XE2 でコンパイルエラー、および、Access violation エラーになる問題を修正。
+            原因は、XE2 で PPointerList の定義が変更になったため。
+            Delphi XE2 でのみ型 PPointerList を追加することで対処。
+  1.2.5  2011/7/11
+  　・修正）文字クラスの範囲指定で、全角半角同一視、ひらがなカタカナ同一視が使えなかったバグを修正。
+  1.2.4  2011/5/18
+    ・修正）条件式で、グループ名を条件に指定してもマッチしないバグを修正。
+  1.2.3  2011/5/14
+    ・修正）後読みが仕様通りでなかったバグを修正。
+            仕様では最上位の選択肢は異なる長さが指定可能だがそうなっていなかった。
+  1.2.2  2011/5/13
+    ・修正）先読み、後読み内で繰り返しを使った時、無限ループに陥ることがあるバグを修正。
+  1.2.1  2011/5/2
+    ・修正）ANSI Delphi でコンパイルできなかったのを修正。
+  1.2.0  2011/4/29
+    ・修正）全角半角一致モードで、行頭の ^ と 行末の $ をメタ文字として認識できないバグを修正。
+    ・修正）ヘルプの誤植を修正。
+    ・変更）TREMatchEngine.MatchPrim 内の繰り返しに関する処理を書き直した。
+            冗長、かつ、読みにくかったため。
+    ・変更）バックトラック用のキャプチャバッファの保存先を TREGroups.push/pop を使うようにした。
+            当初の用途に使わなくなったため。
+    ・変更）RegSplit グローバル関数を手続きに変更した。
+            関数の意味がないため。
+    ・変更）未使用の識別子、メソッドを削除。
+    ・変更）TRELexMode の要素を lmOptimize, lmNormal の2つだけにした。
+            他の要素を使う予定がなくなったため。
+    ・変更）TREStack のフィールドを整理。冗長だったため。
+  1.1.17  2011/4/22
+    ・修正）IgnoreZenHan プロパティが設定できないバグを修正。
+    ・修正）再帰パターンの挙動は Perl 5.10 とは異なり、再帰グループ内にはバックトラックしない仕様にした。
+            実際には以前からそうだったのだがヘルプに明記していなかった。
+    ・変更）TREMatchEngine.MatchRecursion 内の冗長なコードを削除。
+    ・変更）TREMatchEngine クラス内の MatchOne メソッドを削除。
+    ・修正）ヘルプに DefinedCharClassLegacy プロパティに関する記述がなかったのを追加。
+    ・修正）ヘルプの IgnoreZenHan プロパティで構文が property IgnoreWidth: Boolean; となっていたのを修正。
+    ・修正）ヘルプの IndexFromGroupName プロパティの戻り値が間違っていたのを修正。
+  1.1.16  2010/12/25
+    ・新規）UnicodeProp.pas の Block を使うかどうかを {$DEFINE BLOCK} で選択可能にした。
+    ・変更）未使用のネストレベル付後方参照用のコードを削除。
+    ・変更）未使用の文字クラス集合用のコードを削除。
+    ・変更）未使用のリソースストリングを削除。
+    ・修正）\p で、'Is' ではじまる存在しない Block を指定したとき、
+            エラーメッセージに表示される Block 名が 'In' と表示されるバグを修正。
+  1.1.15  2010/12/17
+    ・修正）\X のマッチ範囲が間違っていたのを修正。
+    ・変更）\X の繰り返しを最適化した。
+    ・変更）冗長なプロパティのアクセスメソッドを削除。
+  1.1.14  2010/12/12
+    ・修正）バージョン番号の更新忘れを修正。
+  1.1.13  2010/12/11
+    ・修正）"2010 or later/ja" フォルダ 内の SkRegExpConst.pas 内に
+            リソースストリング sGroupNameIsEmpty が抜けていたのを修正。
+  1.1.12  2010/12/10
+    ・修正）\g の再帰パターンでマッチしないパターンがあったのを修正。
+    ・新規）TRECaptureCollection に Assign メソッドを追加。
+    ・新規）TREGroup に Assign メソッドを追加。
+    ・新規）TREGroupCollection に Assign メソッドを追加。
+    ・変更）シンプルな {n,m} の繰り返しを別処理にした。
+  1.1.11  2010/11/24
+    ・修正）選択の深い階層のグループ内で $ をメタ文字として認識できないバグを修正。
+    ・新規）文字列中のエスケープ文字を文字コードに変換する DecodeEscape グローバル関数を追加。
+    ・新規）文字列中の文字コードをエスケープ文字に変換する EncodeEscape グローバル関数を追加。
+  1.1.10  2010/11/20
+    ・新規）TSkRegExp クラスに Replace メソッドを追加。
+    ・新規）TSkRegExp クラスに Split メソッドを追加。
+    ・新規）TSkRegExp.Exec メソッドのラッパー関数 RegIsMatch 関数を追加。
+    ・新規）TSkRegExp.Exec メソッドのラッパー関数 RegMatch 関数を追加。
+    ・新規）TSkRegExp.Replace メソッドのラッパー関数 RegReplace 関数を追加。
+    ・新規）TSkRegExp.Split メソッドのラッパー関数 RegSplit 手続きを追加。
+    ・新規）ExecRegExp 関数を削除。
+    ・修正）TSkRegExp.ExecNext を Exec、ExecPos と同じ構造にした。
+  1.1.9   2010/11/18
+    ・修正）\n がマッチしないバグを修正。
+  1.1.8   2010/11/17
+    ・修正）TSkRegExp.MatchCore で、マッチの先頭を上書きしてしまっていた。
+    　　　　このため、^\d を連続でマッチさせたときの結果がおかしくなっていた。
+    ・修正）行頭一致の最適化が死んでいたのを生き返らせた。
+  1.1.7   2010/11/5
+    ・修正）(?b) のような間違ったオプション指定がエラーにならないバグを修正。
+    ・変更）TREMatchEngine 抽象クラスを廃止。
+            マッチエンジンの切り替え（ＤＦＡエンジンの実装）を後回しにしたため。
+    ・新規）先頭文字がドットのときの最適化を追加。
+    ・新規）幾何級数的マッチが起こらないようなチェックを追加した。
+            条件定義 CHECK_MATCH_EXPLOSION を無効にすればチェックを行わない。
+  1.1.6   2010/10/24
+    ・修正）\G の動作が Perl と異なっていたのを修正。動作を間違えて理解していたのが原因。
+    ・変更）SkRegularExpression.pas を別配布にした。保守が面倒なため。
+    ・変更）文字クラスを最適化し、マッチ速度を向上させた。
+    ・変更）更新履歴を別ファイル（このファイル）にした。
+  1.1.5   2010/10/9
+    ・変更）Perl 互換の対象を 5.10 に変更。5.9.5 互換が勘違いだったため。
+    ・変更）メタ文字 \g の非互換は書式で区別するように変更。
+    ・変更）上記変更に伴い (?b) オプションを廃止。
+    ・変更）上記変更に伴い BackwardCompatible プロパティを廃止。
+    ・変更）メタ文字 \h の非互換はコンパイルオプション HIsHexDigit のオンオフで対処。
+    ・新規）先頭文字一致用に TRECharMap クラスを新設。
+    ・変更）先頭文字一致のロジックを変更。複数以上の先頭文字があるときは、TRECharMap を使うようにした。
+    ・変更）先頭文字一致用から Aho-Corasick 法による検索を削除。私の力では性能が出ないため。
+    ・新規）TRECharMap 作成用にConvertString, ToWide, ToHalr, ToHiraganak, ToKatakana の各変換関数を追加。
+            テーブルを作るのが面倒なので Windows API を使用。そこそこ性能が出ているので妥協した。
+    ・新規）TRECode に 文字クラスの最適化用の Compare メソッドを追加。未実装。
+  1.1.4   2010/9/17
+    ・新規）\Q..\E を実装。
+    ・変更）最適化における、先頭文字一致のロジックを変更。
+            今までは事前にマッチ位置のリストを作っていたが、
+            マッチ位置を見つけたらすぐにエンジンを起動するように変更した。
+    ・変更）a*b などの先頭文字が不定の最適化時、[ab] を検索するように変更。
+            従来は b があるかだけをチェックし、もしあれば文字列の先頭から正規表現エンジンを起動していた。
+    ・変更）ヘルプで使う用語を Perl の日本語ドキュメントと同じにしました。
+    ・変更）\h, \v を BackwardCompatible プロパティの影響外にした。
+            \v は \x0b を含むため。
+            \h は条件定義 HIsHexDigit で対応。
+  1.1.3   2010/9/9
+    ・新規）Perl 5.9.5 のブランチリセットを実装。(?|式)
+    ・変更）定数 CONST_VERSION を SkRegExpConst.pas から SkRegExp.pas へ移動。
+    ・変更）TSkRegExp クラスから Replace, Split, Substitute 各メソッドを削除。
+    ・新規）TRECapture クラスと TRECaptureCollection クラスを追加。
+            名前は .NET の影響だが用途は異なる。
+    ・変更）TREGroup の FList を TList から TRECapture に変更。
+    ・変更）TREGroups の名前を TREGroupCollection に変更。
+  1.1.2   2010/9/5
+    ・変更）version 1.1.1 で間違ったファイルを公開したため更新。
+  1.1.1   2010/9/4
+    ・修正）ヘルプの誤植を大量に修正。
+    ・修正）数値のグループ名がエラーにならないバグを修正。
+    ・変更）TREGroups のグループ名をハッシュテーブルによる管理に変更。
+    ・変更）TREGroups 内にマッチ結果を出力させるように変更。
+    ・変更）TREGroups をプロパティとして公開。
+  1.1.0   2010/8/26
+    ・新規）例外にコンパイルエラー用の ESkRegExpCompile と実行時エラー用の ESkRegExpRuntime を追加。
+    ・変更）tkGroupStart、nkGroupStart をそれぞれ tkGroupBegin、nkGroupBegin に変更。
+    ・変更）TREQuickSearch の MatchCore メソッドを IsMatch に変更。
+    ・新規）Aho-Corasik 法による検索を行うクラス、TSkHashList、TRETrieNode、TRETrieTree を追加。
+    ・新規）正規表現の先頭が選択の場合は、Aho-Corasick 法によって事前検索を行うようにした。
+    ・変更）TRENamReferenceCode クラスを TRENamedReferenceCode に変更。
+    ・新規）条件分岐構文を追加。(?(if)then|else)
+    ・新規）条件分岐構文を実行する TREIfThenReferenceCode クラス、TREIfThenNamedReferenceCode クラスを追加。
+    ・新規）複数のマッチエンジンサポートのため、TSkRegExp.LexMode プロパティを追加。
+    ・新規）TRELex のトークン先読みを復活。
+    ・新規）複数のマッチエンジンサポートのため、TREMatchCore 抽象クラスを追加。
+    ・変更）TSkRegExp内にあったマッチエンジンを TRETraditionalMatchCore クラスに分離。
+    ・変更）利用していないメソッドを削除。
+    ・変更）CharNext、CharPervメソッドを関数にした。IsLeadChar で検査していたポインタをこれらの関数で処理するようにした。
+    ・変更）連続したリテラルは、最適化時ではなく、 TREParser で処理することにした。これにより最適化にかかっていた時間が短縮される。
+    ・新規）正規表現の末尾がリテラルのときは、先にそのリテラルがあるかをチェックするようにした。
+    ・変更）最適化を大幅に簡略化。これにより最適化にかかっていた時間が短縮される。
+    ・新規）UnicodeProperty で一般プロパティのフル記法をサポート。ex. \p{Uppercase_Letter}
+    ・新規）UnicodeProperty に L& を追加。\p{Lu}、\p{Ll}、\p{Lt} のすべての文字にマッチする。
+    ・変更）(?... の字句解析処理を TRELex.LexLeftPar として分離。
+    ・変更）TSkRegExp.Exec、ExecNext、ExecPos の構造を見直した。
+    ・新規）TSkRegExp.Exec、ExecNext、ExecPos の下請け関数 MatchCore を追加。
+    ・新規）TREGroups クラスに push, pop メソッドを追加。
+    ・変更）コンパイルエラーの表示を修正。わかりやすくした。
+    ・変更）エラーメッセージとそれ用のリソースストリングを修正した。
+    ・新規）8進数表記 \033 、\G、をサポート。
+    ・新規）Perl 5.9.5 互換の \g, \v, \V, \h, \H, \K, \R , (?n), (?-n), (?+n), (?R), (?0), (?&name), (?P<n>), (?P=n) をサポート。
+    ・新規）\g, \v, \V, \h, \H を Perl 互換に変更。
+    ・変更）TRECharCode, TRELiteralCode で表示できない文字を16進表示するようにした。
+            version 1.0 と同じ動作にするには TSkRegExp.BackwardCompatible プロパティを True に指定。
+  1.0.39  2010/10/29
+    ・新規）TSkRegExp クラスに IndexFromGroupName プロパティを追加。
+            SkRegularExpressions.pas version 0.6 用。
+  1.0.38  2010/10/22
+    ・修正）同名のキャプチャグループを複数以上使用し、自身を後方参照したループで、
+            キャプチャバッファの参照先が仕様とは違うバグを修正。
+            例) 正規表現 "(?<n>a)(?<n>b)(?<n>\k<n>c)*" を "abbcbc" にマッチさせたとき、
+                以前のバージョンでは "abbc" にマッチした。ループの中で３番目の
+                キャプチャバッファを参照してしまうため。
+                しかし、仕様通りなら参照するのは２番目のバッファで "abbcbc" にマッチするべき。
+  1.0.37  2010/10/10
+    ・修正）POSIX文字クラスの ascii で、対象文字列の末尾が制御文字だと長さがオーバーするバグを修正。
+    ・変更）\p で IsAlnum などの POSIX 文字クラスを指定できるようにした。
+  1.0.36  2010/10/8
+    ・修正）ConvertREString 関数で文字によっては正常に変換できないバグを修正。
+    ・変更）\p で Unicode.org 推奨のプロパティ名を受け付けるように変更。
+            大文字小文字を同一視し、語の区切りのスペース、ハイフン、アンダーバーを無視して解釈する。
+            ブロック名は In 以外にも .NET と同じ Is でも指定できるようにした。
+  1.0.35  2010/10/1
+    ・修正）UnicodeProp.pas のコンパイル時に警告が出ていたのを修正。
+  1.0.34  2010/9/28
+    ・改良）UnicodeProp.pas を改良。ロジックを変更し、処理速度を向上させた。
+    ・改良）SkRegExpW.pas で持っていた PropertyNames グローバル変数を UnicodeProp.pas に移動。
+    ・修正）\p を使ったとき、マッチの長さがおかしくなるバグを修正。
+    ・修正）ヘルプを改善。
+  1.0.33  2010/9/6
+    ・修正）先読みで .*、最短一致量指定子を使うと無限ループに陥るバグを修正。
+  1.0.32  2010/9/6
+    ・修正）TSkRegExp クラスに GroupNameFromIndex プロパティがあるとヘルプに記載があるが、
+            存在しなかったのを修正。
+  1.0.31  2010/9/4
+    ・修正）TSkRegExp.MatchPos の非マッチ時の返り値がヘルプの記述と違うのを修正。
+            ヘルプでは 非マッチ時にのみ 0 が返るはずが、空文字のマッチでも 0 が返るのを 1 に修正。
+  1.0.30  2010/9/4
+    ・変更）TSkRegExp.ExecPos で範囲指定を行ったときは、指定した範囲が文字列全体だと扱うようにした。
+            前バージョンでは、文字列の一部として扱っていた。この変更は、.NET の仕様に合わせたもの。
+    ・変更）TSkRegExp.ExecPos メソッドの 第2パラメータのデフォルトパラメータを -1 から 0 に変更。
+  1.0.29  2010/9/3
+    ・新規）TSkRegExp.ExecPos で範囲を指定できるようにした。
+    ・新規）TSkRegExp に FMatchTopP, FMatchEndP を追加。ExecPos の範囲対応用。
+    ・変更）TSkRegExp.ExecPos で範囲外の値が指定されたときは、例外ではなく False を返すようにした。
+    ・変更）TSkRegExp.CheckExitState メソッドを削除。未使用のため。
+    ・修正）ExecPos の変更に伴い、ヘルプファイルを加筆修正。
+  1.0.28  2010/8/30
+    ・修正）"2010 or later" フォルダの "SkRegExpConst.pas" が UTF-8 になっていないの修正。
+    ・修正）"2010 or later" フォルダの "SkRegExpConst.pas" は バージョンが 異なっていたのを修正。
+  1.0.27  2010/8/30
+    ・修正）SkRegExpCont.pas の英語メッセージに欠損があったのを修正。
+    ・変更）ソースファイルの文字コードを SJIS から UTF-8 へ変更。
+    ・新規）Delphi 2010 以降の言語切り替えに対応。
+            アーカイブに"2010 or later"フォルダを追加。
+  1.0.26  2010/8/27
+    ・修正）グループ呼び出しで冗長な処理を修正。
+    ・新規）TREGroups に push, pop メソッドを追加。
+  1.0.25  2010/8/20
+    ・修正）\P が使えなかったのを修正。
+  1.0.24  2010/8/14
+    ・修正）リテラル文字列の単純な繰り返しで、バックトラック用のステートを余分に保存していたのを修正。
+    ・新規）TRECode に エレメント数を返す CharCount プロパティを追加。
+    ・修正）上記変更にあわせるため、関数だった Size をプロパティに変更。
+    ・修正）TSkRegExp.CharNext, CharPrev を関数にした。
+    ・修正）IsLeadChar を使っていたポインタ操作を CharNext, CharPrevに書き換えた。
+  1.0.23  2010/8/7
+    ・修正）TREQuickSeach.MatchCore のANSI版でループ範囲の指定が間違っていたのを修正。
+            文字列の末尾に検索対象文字列があった場合、場合によってはマッチしないことがあった。
+  1.0.22  2010/8/6
+    ・修正）単純な繰り返しで、バックトラック用のステートを一つ余分に保存していたのを修正。
+  1.0.21  2010/7/24
+    ・修正）TSkRegExp.CharNext が CharPrev と同じになっていたのを修正。今まで使っていなかったため気づかなかった。
+    ・修正）"a+a" が "a" にマッチしてしまうバグを修正。
+  1.0.20  2010/7/21
+    ・改良）"a+"のような単純な繰り返しを先頭文字検索の対象にした。
+  1.0.19  2010/6/5
+    ・修正）行頭アンカーを指定したとき、マッチが空文字列になるバグを修正。
+    ・修正）TSkRegExp.Optimize メソッド内の GetConcatStrings 関数でアクセス違反になるバグを修正。
+      Free されたオブジェクトのコピーを使っていたため。
+    ・修正）TSkRegExp.Optimize メソッド内の OptimizeLiteralConcat 関数で未使用のTListオブジェクトを削除。
+    ・変更）TREQuickSearch.Exce メソッドを Exec メソッドに名前変更。
+  1.0.18  2010/5/22
+    ・修正）正規表現にサロゲートペアが含まれているとマッチしないことがあるバグを修正。
+    ・改良）リテラル文字を含む検索にはTQuickSearchを使うようにした。
+      全角半角を区別しない、カタカナひらがなを区別しない検索など、有効な使い方を見つけたため。
+    ・改良）TSkRegExp.Optimize 内の OptimizeLiteralConcat で、
+      リテラル文字が連続しているのに、一つのTRELiteralCode にできないことがあったのを修正。
+  1.0.17  2010/5/15
+    ・TSkRegExp.Optimize でキャプチャしない括弧を削除するようにした。
+    ・バグ）TSkRegExp.Optimize 内関数 DeleteStateList の ExtentTo の
+      範囲チェックが間違っていたのを修正。
+  1.0.16  2010/5/14
+    ・バグ）文字クラス使用時に正常にマッチしないバグを修正。
+      TRELex.LexBrace の最後のCharNextの第２パラメータが不定だったため。
+    ・連続したリテラル文字と選択の最適化を TSkRegExp.Optimize で行うようにした。
+    ・上記の最適化の都合で、キャプチャしない括弧でも nkGroupStart、nkGroupEnd を生成するようにした。
+    ・TSkRegExp.FLeadCode の生成を TSkRegExp.GenerateLeadCode で行うようにした。
+    ・TRELex のトークン先読みバッファを削除。使わなくなったため。
+  1.0.15  2010/5/7
+    ・正規表現がリテラル文字だけで構成される場合は通常の検索を行うようにした。
+    ・先頭必須文字がある場合は、先に検索し、必要な箇所でのみ照合を行うようにした。
+    ・文字列比較が乱立していたのを整理するため、REStrLJCompとRECompareStringを書き直し、
+      文字列の比較はこの関数を使うように変更した。
+    ・StringToUCS4Stirng関数を削除。1.0.14での応急処置だったため。
+    ・TQuickSearchを削除。StrPosでも十分速いため。
+  1.0.14  2010/5/4
+    ・最適化によって発生したバグを大幅修正。
+    ・FLeadCode の生成を TRENFA.GenerateStateList で行うように復活。
+    ・GenerateLeadCode を復活。
+    ・TRELiteralCode の生成を Primayで行うように復活。
+    ・TSkRegExp.Optimize の OptimizeChar、OptimizeSelect を廃止。
+    ・TREChar を UCS4Char に、TRECharArray を UCS4String に変更。
+  1.0.13  2010/4/23
+    ・TSkRegExp.FLeadCode の生成をNFA作成後に行うように変更。
+    ・「大文字小文字を区別しない」の照合に使っていた StrLIComp を AnsiStrLIComp に置換。
+      大文字小文字を区別しない場合の、マッチする／しないがわかりにくかったため。
+    ・QuichkSearch関数で検索オプションを指定できなかったバグを修正。
+    ・QuickSearch関数のstringバージョンを削除。使っていないため。
+  1.0.12  2010/4/20
+    ・TSkRegExp.Optimize の中で OptimizeSelect と OptimizeChar が
+      コメントアウトされて無効になっていたのを修正。
+      このため、1.0.11 の最適化が行われませんでした。
+  1.0.11  2010/4/18
+    ・TRECode.ExecRepeatのパラメータを変更。この方が速いので。
+    ・1.0.10で削除した TSkRegExp.FCodeList と TSkRegExp.TailCode を復活。
+      この方が速いため。TailCode は相変わらず未使用。
+    ・this|that|these のような正規表現を th(?:is|at|ese) に最適化するようにした。
+      この方が速いため。
+    ・連続したリテラルは TRELiteralCode を使うが、TREParserではなく、
+      TSkRegExp.Optimize で生成するようにした。
+      上記の最適化に対応するためと、
+      将来、DFAエンジンを搭載するときにはこの方が都合が良さそうなため。
+    ・Match、MatchPos、MatchLenの各プロパティの処理を、
+      TREGroupsの同じ機能を持つメソッドを呼び出すようにした。
+  1.0.10 2010/4/11
+    ・TSkRegExp.Optimize で、行われるべき最適化処理が行われないバグを修正。
+  1.0.9 2010/4/11
+    ・否定先読み、否定戻り読みの NFA を変更。冗長だったので。
+    ・Debug 用の NFA 要素を簡略化。
+    ・未使用の ResourceString を削除。
+    ・未使用のコードを削除。
+    ・TRECode に ExecRepeat を追加し、単純な繰り返しはこのメソッドを使うことにした。
+    ・上記変更により、繰り返し専用のクラスを削除。
+    ・TREStack のデータ構造を変更。
+    ・行頭、先頭を必須とする正規表現の最適化用に TSkRegExp.SetupLeadStrings を追加。
+    ・NFAの最適化用に TSkRegExp.Optimize メソッドを追加。でも、まだ仕事は一つだけ。
+    ・ANSI Delphi 用に WideStrUtils を uses
+   1.0.8 2010/4/9
+    ・TREGroups.Clear で、FMatchData の初期化が不完全だったのを修正。
+    ・TSkRegExp.Compile に FMatchData の初期化処理を追加。
+    ・TREParser で行っていた初期化処理の一部を TSkRegExp.Compile内で行うように修正。
+  1.0.7 2010/4/9
+    ・ANSI Delphi でのコンパイルエラーを修正。
+  1.0.6 2010/4/8
+    ・誤って作業中のファイルを公開してしまったため削除。
+  1.0.5 2010/4/4
+    ・ExecNext 関数のマッチがおかしかったのを修正。初期化し忘れ。
+  1.0.4 2010/4/4
+    ・ANSI Delphi でコンパイルできなかったのを修正。
+    ※ただし、ANSI Delphi は最適化してないので遅いです。
+  1.0.3 2010/4/3
+    ・再帰のグループマッチの結果がPHP5(鬼車)と異なっていたのを同じ動作にした。
+    ・\g で、単なる呼び出しと再帰呼び出しで処理を別にした。
+    ・TREGroups データの push、pop を TREStack の中で行うようにした。
+    ・上記変更に伴い、TREGroups から push、popを削除した。
+    ・ソースコードの整理。
+  1.0.2 2010/4/2
+    ・グループより先に後方参照があるとエラーになるバグを修正。
+    ・TSkRegExp 内 の CharNext, CharPrev メソッドをサロゲート対応に変更。
+    ・クラス名 TRENFACode を TRENFAState に変更。
+    ・使い勝手の都合で、IsLineSpace, IsAnkWord, IsUniCodeWord, IsAndDigit, IsUnicodeDigit,
+      IsAndSpace, IsUnicodeSpace, IsAnkHexDigt, IsUnicodeHexDigitをメソッドから関数に変更。
+    ・テスト用の仮コードを削除。
+  1.0.1 2010/4/1
+    ・照合エンジンを一新し、最大８倍の高速化を実現。
+    ・グループの部分式呼び出し \g をサポート。再帰呼び出しにも対応。
+    ・後方参照でグループ番号を相対指定できるようにした。ex. (a)(b)\k<-2>
+  0.9.3 2010/1/19
+    ・Delphi2009以降へ対応。
+      Delphi2009 への対応については、totonicaさん、DEKOさんによる変更を、
+      ほぼそのまま採用させていただきました。この場を借りて感謝いたします。
+    ・TRECode.EqualsをTRECode.IsEqualに変更。Delphi2009以降のTObjectに存在するため。
+    ・USC-4へ対応
+    ・文字列定数を SkRegExpConst.pas に分離。英語のメッセージを用意。
+    ・\x の動作を変更
+    ・\u を廃止
+  0.9.2 2008/1/4    条件定義にUseJapaneseOptionを追加
+  0.9.1 2007/12/31  最初のバージョン

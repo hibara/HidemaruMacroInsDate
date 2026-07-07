@@ -1,0 +1,65 @@
+//======================================================================
+// 
+// 日付時刻挿入マクロ（DLL付属拡張書式版）
+// 
+// ※このマクロを動作させるには付属のinsdate.dllが必要です。
+//   カスタマイズ方法や挿入日時の書式は、同梱のreadme.txtにあります。
+//   詳しくはそちらをご覧ください。
+// 
+//======================================================================
+
+#dll = loaddll("insdate.dll");
+if( #dll == 0 ) {
+	message "insdate.dllのロードに失敗しました。";
+	endmacro;
+}
+
+
+//本日の日付
+$InsDate[0] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0);
+$InsDate[1] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0);
+$InsDate[2] = dllfuncstr( #dll, "GetDateStringEn","yyyy/mm/dd(ddd)", 0);
+$InsDate[3] = dllfuncstr( #dll, "GetDateString", "gge年m月d日　dddd", 0);
+$InsDate[4] = "\x01";
+$InsDate[5] = "昨日";
+$InsDate[6] = "明日";
+
+//ポップアップメニューの表示
+menuarray $InsDate, 7;	//←上で指定したメニューの数を入力
+
+if ( result > 0 ){
+
+	if ( result < 5 ){
+		//メニューで選択された番号から-1する（配列は0から始まっているため）
+		#num = result - 1;
+		//選択された文字列を秀丸エディタのカーソル位置に挿入する
+		insert $InsDate[#num];
+	}
+	else{
+		//昨日または、明日の日付を選択した
+
+		if ( result == 6 ){
+			#inc = -1;   //昨日（-1日）
+		}
+		else{
+			#inc = 1;    //明日（+1日）
+		}
+		
+		$InsDate[0] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0, 0, #inc);
+		$InsDate[1] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0, 0, #inc);
+		$InsDate[2] = dllfuncstr( #dll, "GetDateString", "gge年m月d日　dddd", 0, 0, #inc);
+		menuarray $InsDate, 3;
+		#num = result - 1;
+		if ( result > 0){
+			insert $InsDate[#num];
+		}
+		
+	}
+
+}
+
+//DLLファイルを解放
+freedll #dll;
+
+endmacro;
+

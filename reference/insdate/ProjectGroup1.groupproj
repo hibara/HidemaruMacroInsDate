@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{68F55DD5-3872-4B31-9069-1198A3625AF2}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="insdate.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="installer\install.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="insdate">
+        <MSBuild Projects="insdate.cbproj"/>
+    </Target>
+    <Target Name="insdate:Clean">
+        <MSBuild Projects="insdate.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="insdate:Make">
+        <MSBuild Projects="insdate.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="install">
+        <MSBuild Projects="installer\install.cbproj"/>
+    </Target>
+    <Target Name="install:Clean">
+        <MSBuild Projects="installer\install.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="install:Make">
+        <MSBuild Projects="installer\install.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="insdate;install"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="insdate:Clean;install:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="insdate:Make;install:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

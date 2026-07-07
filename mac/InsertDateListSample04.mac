@@ -1,0 +1,107 @@
+﻿//======================================================================
+//
+//  InsertDateListSample04.mac ― サンプル(4) 応用（相対日時・午前午後・和暦）
+//
+//  少し進んだ使い方の見本です。
+//    ・相対日時 … 基準日時に「年・月・日・時・分・秒」の増減を足して
+//                 「明日」「1週間後」「3時間後」などを作れます。
+//    ・午前/午後 … ampm・a/p トークンの使い方
+//    ・和暦 … 元号(令和)つきの表記
+//
+//  ▼相対日時の引数（GetDateString の第2引数以降）
+//    GetDateString( "書式", 年, 月, 日, 時, 分, 秒 )
+//      各値は基準日時への増減。0（または省略）なら変化なし。
+//      例）… , 0, 0, 1        → 明日（+1日）
+//          … , 0, 0, 0, 3     → 3時間後（+3時間）
+//          … , 0, 0, 0, 0,-30 → 30分前（-30分）
+//
+//  ※動作には付属の insdate32.dll / insdate64.dll が必要です。この2つの
+//    DLL と、実行するマクロ(.mac)は、同じフォルダ（秀丸のマクロフォルダ）に
+//    置いてください。
+//
+//  ※使い方の詳細（書式トークン一覧・関数リファレンス）は Help.txt にあります。
+//    Help.txt とライセンス(LICENSE)は、マクロ置き場ではなく、次のフォルダに
+//    入っています：
+//
+//        %LOCALAPPDATA%\HiBARA_Software\HidemaruInsDateMacro\
+//
+//    ↑このパスを、エクスプローラーのアドレス欄にそのまま貼り付けて Enter を
+//      押すと、そのフォルダを開けます（環境変数はエクスプローラーが自動展開）。
+//      展開例: C:\Users\<ユーザー名>\AppData\Local\HiBARA_Software\HidemaruInsDateMacro\
+//
+//======================================================================
+
+
+//----------------------------------------------------------------------
+// 秀丸のビット数(32/64)に合わせて DLL を選び、読み込む
+//----------------------------------------------------------------------
+$dllPath = currentmacrodirectory + "\\";
+if ((platform & 0x00080000) != 0) {
+    $dllPath = $dllPath + "insdate64.dll";   // 64bit版秀丸
+} else {
+    $dllPath = $dllPath + "insdate32.dll";   // 32bit版秀丸
+}
+
+if (!existfile($dllPath)) {
+    message "DLLが見つかりません。\n\n" + $dllPath;
+    endmacro;
+}
+
+#dll = loaddll($dllPath);
+if (#dll == 0) {
+    message "DLLのロードに失敗しました。\n\n" + $dllPath;
+    endmacro;
+}
+
+
+//----------------------------------------------------------------------
+// 挿入する文字列を用意する
+//   $InsDate[] … 実際に挿入する文字列   $InsMenu[] … メニュー表示（同じ番号で対応）
+//   右コメントは 2026/07/06(月) 22:08:07 を基準にした場合の出力例
+//----------------------------------------------------------------------
+// ■ 相対日時（年,月,日,時,分,秒 に増減を渡す）
+$InsDate[0]  = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0, 0,  1 );   // 明日      2026/07/07(火)
+$InsDate[1]  = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0, 0, -1 );   // 昨日      2026/07/05(日)
+$InsDate[2]  = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0, 0,  7 );   // 1週間後   2026/07/13(月)
+$InsDate[3]  = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0, 1     );   // 1か月後   2026/08/06(木)
+$InsDate[4]  = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 1        );   // 1年後     2027/07/06(火)
+$InsDate[5]  = dllfuncstr( #dll, "GetDateString", "hh:nn", 0, 0, 0,  3        );   // 3時間後   01:08
+$InsDate[6]  = dllfuncstr( #dll, "GetDateString", "hh:nn", 0, 0, 0, 0, -30    );   // 30分前    21:38
+$InsDate[7]  = "\x01";
+// ■ 午前/午後（ampm=午前/午後、a/p=午前午後1文字。どちらも時刻は12時間制になる）
+$InsDate[8]  = dllfuncstr( #dll, "GetDateString",   "ampm h時n分s秒", 0 );          // 午後 0時8分7秒 ←ampmは12時制
+$InsDate[9]  = dllfuncstr( #dll, "GetDateString",   "a/p hh:nn:ss", 0 );            // p 10:08:07
+$InsDate[10] = dllfuncstr( #dll, "GetDateStringEn", "ampm hh:nn:ss", 0 );           // PM 10:08:07（英語）
+$InsDate[11] = "\x01";
+// ■ 和暦（gg=元号名 令和、e=元号年、ee=2桁元号年）
+$InsDate[12] = dllfuncstr( #dll, "GetDateString", "gge年m月d日(dddd)", 0 );          // 令和8年7月6日(月曜日)
+$InsDate[13] = dllfuncstr( #dll, "GetDateString", "ggee年mm月dd日", 0 );             // 令和08年07月06日
+
+// メニュー表示用（ラベル付き）
+$InsMenu[0]  = "明日：　　　" + $InsDate[0];
+$InsMenu[1]  = "昨日：　　　" + $InsDate[1];
+$InsMenu[2]  = "1週間後：　" + $InsDate[2];
+$InsMenu[3]  = "1か月後：　" + $InsDate[3];
+$InsMenu[4]  = "1年後：　　" + $InsDate[4];
+$InsMenu[5]  = "3時間後：　" + $InsDate[5];
+$InsMenu[6]  = "30分前：　　" + $InsDate[6];
+$InsMenu[7]  = "\x01";
+$InsMenu[8]  = "ampm：　　　" + $InsDate[8];
+$InsMenu[9]  = "a/p：　　　　" + $InsDate[9];
+$InsMenu[10] = "英語 ampm：　" + $InsDate[10];
+$InsMenu[11] = "\x01";
+$InsMenu[12] = "和暦：　　　" + $InsDate[12];
+$InsMenu[13] = "和暦(2桁)：　" + $InsDate[13];
+
+
+//----------------------------------------------------------------------
+// メニュー表示 → 選んだ文字列を挿入
+//----------------------------------------------------------------------
+menuarray $InsMenu, 14;                       // ←並べた項目の数(14)を指定
+
+if ( result > 0 ) {
+    insert $InsDate[ result - 1 ];            // ラベルなしの $InsDate 側を挿入
+}
+
+freedll #dll;
+endmacro;

@@ -1,0 +1,28 @@
+D:\Dropbox\WaFont Explorer\tools\GetVersion\bin\Debug\net10.0\GetVersion.exe
+D:\Dropbox\WaFont Explorer\tools\GetVersion\bin\Debug\net10.0\GetVersion.deps.json
+D:\Dropbox\WaFont Explorer\tools\GetVersion\bin\Debug\net10.0\GetVersion.runtimeconfig.json
+D:\Dropbox\WaFont Explorer\tools\GetVersion\bin\Debug\net10.0\GetVersion.dll
+D:\Dropbox\WaFont Explorer\tools\GetVersion\bin\Debug\net10.0\GetVersion.pdb
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\GetVersion.GeneratedMSBuildEditorConfig.editorconfig
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\GetVersion.AssemblyInfoInputs.cache
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\GetVersion.AssemblyInfo.cs
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\GetVersion.csproj.CoreCompileInputs.cache
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\GetVersion.dll
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\refint\GetVersion.dll
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\GetVersion.pdb
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\GetVersion.genruntimeconfig.cache
+D:\Dropbox\WaFont Explorer\tools\GetVersion\obj\Debug\net10.0\ref\GetVersion.dll
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\bin\Debug\net10.0\GetVersion.exe
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\bin\Debug\net10.0\GetVersion.deps.json
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\bin\Debug\net10.0\GetVersion.runtimeconfig.json
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\bin\Debug\net10.0\GetVersion.dll
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\bin\Debug\net10.0\GetVersion.pdb
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\GetVersion.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\GetVersion.AssemblyInfoInputs.cache
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\GetVersion.AssemblyInfo.cs
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\GetVersion.csproj.CoreCompileInputs.cache
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\GetVersion.dll
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\refint\GetVersion.dll
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\GetVersion.pdb
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\GetVersion.genruntimeconfig.cache
+C:\Users\hibara\Dropbox\insdate2\tools\GetVersion\obj\Debug\net10.0\ref\GetVersion.dll

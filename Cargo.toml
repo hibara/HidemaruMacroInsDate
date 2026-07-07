@@ -1,0 +1,29 @@
+[package]
+name = "insdate"
+version = "2.0.0"
+edition = "2021"
+# DLL の「ファイルバージョン」は build.ps1 が rc.exe で .res を作り、リンカ引数で
+# 埋め込む（ビルドスクリプト build.rs は使わない：ARM ホストからのクロスビルドで
+# ビルドスクリプトがホスト側リンクを起こし、ターゲット用リンカと衝突するのを避けるため）。
+# ここの version は Cargo/crate のメタ情報。実際に DLL へ入る値は build.ps1 の $Version。
+
+# [lib] で「ライブラリとしてビルドする」設定をする。
+# crate-type = ["cdylib"] が「C 互換のネイティブ DLL（ランタイム非依存）を作れ」の意味。
+# name = "insdate" なので、出力ファイル名は insdate.dll になる（既存マクロの loaddll 名に一致）。
+[lib]
+name = "insdate"
+crate-type = ["cdylib"]
+
+[dependencies]
+# 外部クレートは使わない（依存ゼロ）。
+# Win32 API は src/lib.rs 内で直接 extern 宣言して呼ぶ。
+#   理由: ARM ホストから x86/x64 をクロスビルドする本環境では、依存クレートに付く
+#   「ビルドスクリプト（ホスト=ARM64 でリンクされる）」が原因でリンクが壊れる。
+#   自前 extern なら生成物はターゲット DLL 1 個だけになり、リンクが素直に通る。
+#   おまけに DLL が完全ランタイム非依存になり、元 C++ の Win32 直呼びにも忠実。
+
+# リリースビルドの最適化設定（CLAUDE.md §8 の骨子どおり）。
+[profile.release]
+opt-level = "z"   # サイズ優先の最適化
+lto = true        # リンク時最適化。無駄を削る
+panic = "abort"   # パニック時に巻き戻さず即終了。ランタイム依存とサイズを最小化

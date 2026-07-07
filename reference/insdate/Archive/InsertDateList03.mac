@@ -1,0 +1,57 @@
+//======================================================================
+// 
+// 日付時刻挿入マクロ（DLL付属拡張書式版）
+//
+// 編集中のテキストファイルの各タイムスタンプを取得して挿入します。
+//
+// ※このマクロを動作させるには付属のinsdate.dllが必要です。
+//   カスタマイズ方法や挿入日時の書式は、同梱のreadme.txtにあります。
+//   詳しくはそちらをご覧ください。
+// 
+//======================================================================
+
+#dll = loaddll("insdate.dll");
+if( #dll == 0 ) {
+	message "insdate.dllのロードに失敗しました。";
+	endmacro;
+}
+
+//挿入する文字列リスト
+$InsDate[0] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd) hh:nn:ss", 0);            //今日の日付
+$InsDate[1] = "";
+$InsDate[2] = dllfuncstr( #dll, "GetCreateDateString", filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0);      //作成日時
+$InsDate[3] = dllfuncstr( #dll, "GetCreateDateStringEn", filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0);    //作成日時(English)
+$InsDate[4] = "";
+$InsDate[5] = dllfuncstr( #dll, "GetLastWriteDateString", filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0);   //更新日時
+$InsDate[6] = dllfuncstr( #dll, "GetLastWriteDateStringEn", filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0); //更新日時(English)
+$InsDate[7] = "";
+$InsDate[8] = dllfuncstr( #dll, "GetAccessDateString", filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0);      //アクセス日時
+$InsDate[9] = dllfuncstr( #dll, "GetAccessDateStringEn", filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0);    //アクセス日時(English)
+
+//本日の日付
+$InsMenu[0] = "今日：　　　　　　　　" + $InsDate[0];
+$InsMenu[1] = "\x01";
+$InsMenu[2] = "作成日時：　　　　　　" + $InsDate[2];
+$InsMenu[3] = "作成日時（英語）：　　" + $InsDate[3];
+$InsMenu[4] = "\x01";
+$InsMenu[5] = "更新日時：　　　　　　" + $InsDate[5];
+$InsMenu[6] = "更新日時（英語）：　　" + $InsDate[6];
+$InsMenu[7] = "\x01";
+$InsMenu[8] = "アクセス日時：　　　　" + $InsDate[8];
+$InsMenu[9] = "アクセス日時（英語）：" + $InsDate[9];
+
+//ポップアップメニュー表示
+menuarray $InsMenu, 10;	//←上で指定したメニューの数を入力
+
+if ( result > 0 ){
+	//メニューで選択された番号から-1する（配列は0から始まっているため）
+	#num = result - 1;
+	//選択した日時文字列を挿入
+	insert $InsDate[#num];
+}
+
+//DLLファイルの解放
+freedll #dll;
+
+endmacro;
+

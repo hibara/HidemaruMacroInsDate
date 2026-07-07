@@ -1,0 +1,96 @@
+﻿//======================================================================
+//
+//  InsertDateListSample03.mac ― サンプル(3) ファイルの日時
+//
+//  編集中のファイルの「作成日時／更新日時／アクセス日時」を取得して
+//  挿入するサンプルです。それぞれ日本語表記と英語表記を用意しています。
+//
+//    GetCreateDateString     … 作成日時
+//    GetLastWriteDateString  … 更新日時
+//    GetAccessDateString     … アクセス日時
+//    （末尾に En を付けると英語表記版。例: GetCreateDateStringEn）
+//
+//  ※これらは第1引数にファイルのパスを渡します。ここでは編集中ファイルの
+//    パス(filename)を使います。無題(未保存)のファイルではパスが無いため、
+//    現在日時にフォールバックします。
+//
+//  ※動作には付属の insdate32.dll / insdate64.dll が必要です。この2つの
+//    DLL と、実行するマクロ(.mac)は、同じフォルダ（秀丸のマクロフォルダ）に
+//    置いてください。
+//
+//  ※使い方の詳細（書式トークン一覧・関数リファレンス）は Help.txt にあります。
+//    Help.txt とライセンス(LICENSE)は、マクロ置き場ではなく、次のフォルダに
+//    入っています：
+//
+//        %LOCALAPPDATA%\HiBARA_Software\HidemaruInsDateMacro\
+//
+//    ↑このパスを、エクスプローラーのアドレス欄にそのまま貼り付けて Enter を
+//      押すと、そのフォルダを開けます（環境変数はエクスプローラーが自動展開）。
+//      展開例: C:\Users\<ユーザー名>\AppData\Local\HiBARA_Software\HidemaruInsDateMacro\
+//
+//======================================================================
+
+
+//----------------------------------------------------------------------
+// 秀丸のビット数(32/64)に合わせて DLL を選び、読み込む
+//----------------------------------------------------------------------
+$dllPath = currentmacrodirectory + "\\";
+if ((platform & 0x00080000) != 0) {
+    $dllPath = $dllPath + "insdate64.dll";   // 64bit版秀丸
+} else {
+    $dllPath = $dllPath + "insdate32.dll";   // 32bit版秀丸
+}
+
+if (!existfile($dllPath)) {
+    message "DLLが見つかりません。\n\n" + $dllPath;
+    endmacro;
+}
+
+#dll = loaddll($dllPath);
+if (#dll == 0) {
+    message "DLLのロードに失敗しました。\n\n" + $dllPath;
+    endmacro;
+}
+
+
+//----------------------------------------------------------------------
+// 各タイムスタンプを取得する
+//   $InsDate[] … 実際に挿入する文字列    $InsMenu[] … メニュー表示（両者は同じ番号で対応）
+//   書式は共通で "yyyy/mm/dd(ddd) hh:nn:ss"（例: 2026/07/06(月) 22:08:07）
+//----------------------------------------------------------------------
+$InsDate[0] = dllfuncstr( #dll, "GetDateString",             "yyyy/mm/dd(ddd) hh:nn:ss", 0 );  // 今日（現在日時）
+$InsDate[1] = "";
+$InsDate[2] = dllfuncstr( #dll, "GetCreateDateString",    filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0 );  // 作成日時
+$InsDate[3] = dllfuncstr( #dll, "GetCreateDateStringEn",  filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0 );  // 作成日時(英)
+$InsDate[4] = "";
+$InsDate[5] = dllfuncstr( #dll, "GetLastWriteDateString",   filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0 );  // 更新日時
+$InsDate[6] = dllfuncstr( #dll, "GetLastWriteDateStringEn", filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0 );  // 更新日時(英)
+$InsDate[7] = "";
+$InsDate[8] = dllfuncstr( #dll, "GetAccessDateString",    filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0 );  // アクセス日時
+$InsDate[9] = dllfuncstr( #dll, "GetAccessDateStringEn",  filename, "yyyy/mm/dd(ddd) hh:nn:ss", 0 );  // アクセス日時(英)
+
+// メニュー表示用（ラベル付き。"\x01" は区切り線）
+$InsMenu[0] = "今日：　　　　　　　　" + $InsDate[0];
+$InsMenu[1] = "\x01";
+$InsMenu[2] = "作成日時：　　　　　　" + $InsDate[2];
+$InsMenu[3] = "作成日時（英語）：　　" + $InsDate[3];
+$InsMenu[4] = "\x01";
+$InsMenu[5] = "更新日時：　　　　　　" + $InsDate[5];
+$InsMenu[6] = "更新日時（英語）：　　" + $InsDate[6];
+$InsMenu[7] = "\x01";
+$InsMenu[8] = "アクセス日時：　　　　" + $InsDate[8];
+$InsMenu[9] = "アクセス日時（英語）：" + $InsDate[9];
+
+
+//----------------------------------------------------------------------
+// メニュー表示 → 選んだ日時を挿入
+//   ラベルではなく $InsDate[] 側（ラベルなしの日時）を挿入するのがポイント
+//----------------------------------------------------------------------
+menuarray $InsMenu, 10;                       // ←並べた項目の数(10)を指定
+
+if ( result > 0 ) {
+    insert $InsDate[ result - 1 ];            // 配列は 0 始まりなので -1
+}
+
+freedll #dll;
+endmacro;

@@ -1,0 +1,80 @@
+﻿//======================================================================
+//
+//  InsertDate.mac ― 日付を1つ、その場に挿入する（最小構成）
+//
+//  カーソル位置に「今日の日付」を1つだけ挿入する、いちばんシンプルな
+//  使い方の見本です。挿入する形（書式）を変えたいときは、下の方にある
+//  $InsDateString = ... の行を1つだけ書き換えてください。
+//
+//  ※動作には付属の insdate32.dll / insdate64.dll が必要です。この2つの
+//    DLL と、実行するマクロ(.mac)は、同じフォルダ（秀丸のマクロフォルダ）に
+//    置いてください。
+//
+//  ※使い方の詳細（書式トークン一覧・関数リファレンス）は Help.txt にあります。
+//    Help.txt とライセンス(LICENSE)は、マクロ置き場ではなく、次のフォルダに
+//    入っています：
+//
+//        %LOCALAPPDATA%\HiBARA_Software\HidemaruInsDateMacro\
+//
+//    ↑このパスを、エクスプローラーのアドレス欄にそのまま貼り付けて Enter を
+//      押すと、そのフォルダを開けます（環境変数はエクスプローラーが自動展開）。
+//      展開例: C:\Users\<ユーザー名>\AppData\Local\HiBARA_Software\HidemaruInsDateMacro\
+//
+//======================================================================
+
+
+//----------------------------------------------------------------------
+// 1. 秀丸のビット数(32bit/64bit)に合わせて、使う DLL を選ぶ
+//
+//    32bit版・64bit版のどちらの DLL も、このマクロと同じフォルダに
+//    一緒に置いておけば、下の判定で自動的に正しい方が読み込まれます。
+//    （platform の 0x00080000 ビットが立っていれば 64bit版秀丸）
+//----------------------------------------------------------------------
+$dllPath = currentmacrodirectory + "\\";
+if ((platform & 0x00080000) != 0) {
+    $dllPath = $dllPath + "insdate64.dll";   // 64bit版秀丸
+} else {
+    $dllPath = $dllPath + "insdate32.dll";   // 32bit版秀丸
+}
+
+// DLL が見つからなければ中止（配置し忘れの検知）
+if (!existfile($dllPath)) {
+    message "DLLが見つかりません。\n\n" + $dllPath;
+    endmacro;
+}
+
+// DLL を読み込む
+#dll = loaddll($dllPath);
+if (#dll == 0) {
+    message "DLLのロードに失敗しました。\n\n" + $dllPath;
+    endmacro;
+}
+
+
+//----------------------------------------------------------------------
+// 2. 日付の文字列を作る
+//
+//    dllfuncstr( #dll, "GetDateString", "書式", 年,月,日,時,分,秒 )
+//      ・第3引数 "書式" が出力の形。ここを好みに変えて使います。
+//      ・年月日時分秒は「今日からの増減」。0（または省略）なら当日そのまま。
+//        例）… , 0,0,1  なら「明日」、 … , 0,0,-1 なら「昨日」
+//
+//    ▼書式の例（使いたい行の先頭「//」を外して、1つだけ有効にする）
+//      ※右のコメントは 2026/07/06(月) を挿入した場合の出力例です
+//----------------------------------------------------------------------
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0 );          // 2026/07/06
+$InsDateString = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0 );     // 2026/07/06(月)
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "yyyy年m月d日", 0 );        // 2026年7月6日
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "gge年m月d日(ddd)", 0 );    // 令和8年7月6日(月)  ←和暦
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "hh:nn:ss", 0 );            // 22:08:07（現在時刻）
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "ampm h時n分s秒", 0 );      // 午後 0時8分7秒  ←12時制
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "yyyy/mm/dd(ddd)", 0 );   // 2026/07/06(Mon) ←英語表記
+
+
+//----------------------------------------------------------------------
+// 3. カーソル位置に挿入して、DLL を解放して終了
+//----------------------------------------------------------------------
+insert $InsDateString;
+
+freedll #dll;
+endmacro;

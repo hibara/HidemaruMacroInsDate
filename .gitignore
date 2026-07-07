@@ -1,0 +1,22 @@
+# ---- Claude ----
+.claude/
+
+# ---- Rust ビルド成果物 ----
+/target/
+
+# ---- ビルドした DLL（成果物。配布はパッケージ／リリースで行う）----
+/dist/
+
+# ---- 配布パッケージ一式（署名・鍵・インストーラを含むため非公開）----
+/_installer/
+
+# ---- Windows / エディタ ----
+Thumbs.db
+Desktop.ini
+*.bak
+*.swp
+
+# private temporary directory and files
+_*/
+_*
+

@@ -1,0 +1,28 @@
+//-----------------------------------
+//UACエレベーションを要求して関連付けプログラムを呼び出す
+
+TShellExecuteInfoA sei = {0};
+
+if ( Win32MajorVersion >= 6 ) {
+	sei.lpVerb = "runas";	//Vista
+}
+else{
+	sei.lpVerb = "open";	//その他OS
+}
+
+sei.cbSize = sizeof(sei);
+sei.hwnd = Application->Handle;
+sei.fMask = SEE_MASK_FLAG_DDEWAIT | SEE_MASK_FLAG_NO_UI;
+sei.lpFile = ExeFilePath.c_str();
+sei.lpParameters = Parameters.c_str();
+sei.nShow = SW_SHOWNOACTIVATE;
+
+if ( ShellExecuteEx(&sei) == false){
+		//RaiseLastOSError();
+		return(false);
+}
+
+
+
+
+

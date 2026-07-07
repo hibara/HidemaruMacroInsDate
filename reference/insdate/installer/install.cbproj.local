@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012/03/06 12:59:09.855.cpp,C:\Users\hinoki\Documents\RAD Studio\Projects\Unit2.cpp=C:\Users\hinoki\Documents\Dropbox\programs\insdate\installer\Unit1.cpp</Transaction>
+    <Transaction>2012/03/06 12:59:09.880.dfm,C:\Users\hinoki\Documents\RAD Studio\Projects\Unit2.dfm=C:\Users\hinoki\Documents\Dropbox\programs\insdate\installer\Unit1.dfm</Transaction>
+    <Transaction>2012/03/06 12:59:09.880.h,C:\Users\hinoki\Documents\RAD Studio\Projects\Unit2.h=C:\Users\hinoki\Documents\Dropbox\programs\insdate\installer\Unit1.h</Transaction>
+    <Transaction>2012/03/06 12:59:16.283.cbproj,C:\Users\hinoki\Documents\RAD Studio\Projects\Project1.cbproj=C:\Users\hinoki\Documents\Dropbox\programs\insdate\installer\install.cbproj</Transaction>
+    <Transaction>2012/03/06 20:28:08.424.rc,C:\Users\hinoki\Documents\Dropbox\programs\insdate\installer\install.rc=</Transaction>
+  </Transactions>
+</BorlandProject>

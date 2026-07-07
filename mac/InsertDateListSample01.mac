@@ -1,0 +1,96 @@
+﻿//======================================================================
+//
+//  InsertDateListSample01.mac ― サンプル(1) 基本のメニュー
+//
+//  「今日の日付」をいくつかの代表的な書式でメニューに並べ、選んだものを
+//  挿入します。加えて「昨日」「明日」を選ぶと、±1日した候補を出します。
+//  まずはこのサンプルで、メニュー方式の基本形をつかんでください。
+//
+//  ※動作には付属の insdate32.dll / insdate64.dll が必要です。この2つの
+//    DLL と、実行するマクロ(.mac)は、同じフォルダ（秀丸のマクロフォルダ）に
+//    置いてください。
+//
+//  ※使い方の詳細（書式トークン一覧・関数リファレンス）は Help.txt にあります。
+//    Help.txt とライセンス(LICENSE)は、マクロ置き場ではなく、次のフォルダに
+//    入っています：
+//
+//        %LOCALAPPDATA%\HiBARA_Software\HidemaruInsDateMacro\
+//
+//    ↑このパスを、エクスプローラーのアドレス欄にそのまま貼り付けて Enter を
+//      押すと、そのフォルダを開けます（環境変数はエクスプローラーが自動展開）。
+//      展開例: C:\Users\<ユーザー名>\AppData\Local\HiBARA_Software\HidemaruInsDateMacro\
+//
+//======================================================================
+
+
+//----------------------------------------------------------------------
+// 秀丸のビット数(32/64)に合わせて DLL を選び、読み込む
+//   （両方の DLL を同じフォルダに置いておけば自動で正しい方を読みます）
+//----------------------------------------------------------------------
+$dllPath = currentmacrodirectory + "\\";
+if ((platform & 0x00080000) != 0) {
+    $dllPath = $dllPath + "insdate64.dll";   // 64bit版秀丸
+} else {
+    $dllPath = $dllPath + "insdate32.dll";   // 32bit版秀丸
+}
+
+if (!existfile($dllPath)) {
+    message "DLLが見つかりません。\n\n" + $dllPath;
+    endmacro;
+}
+
+#dll = loaddll($dllPath);
+if (#dll == 0) {
+    message "DLLのロードに失敗しました。\n\n" + $dllPath;
+    endmacro;
+}
+
+
+//----------------------------------------------------------------------
+// 今日の日付を、代表的な書式で用意する
+//   ※右のコメントは 2026/07/06(月) の場合の出力例
+//----------------------------------------------------------------------
+$InsDate[0] = dllfuncstr( #dll, "GetDateString",   "yyyy/mm/dd", 0 );          // 2026/07/06
+$InsDate[1] = dllfuncstr( #dll, "GetDateString",   "yyyy/mm/dd(ddd)", 0 );     // 2026/07/06(月)
+$InsDate[2] = dllfuncstr( #dll, "GetDateStringEn", "yyyy/mm/dd(ddd)", 0 );     // 2026/07/06(Mon) 英語表記
+$InsDate[3] = dllfuncstr( #dll, "GetDateString",   "gge年m月d日 dddd", 0 );     // 令和8年7月6日 月曜日（和暦）
+$InsDate[4] = "\x01";                                                         // 区切り線
+$InsDate[5] = "昨日";                                                          // 選ぶと -1日の候補を出す
+$InsDate[6] = "明日";                                                          // 選ぶと +1日の候補を出す
+
+//----------------------------------------------------------------------
+// メニュー表示（result は 1 始まり。0 はキャンセル）
+//----------------------------------------------------------------------
+menuarray $InsDate, 7;                       // ←並べた項目の数(7)を指定
+
+if ( result == 0 ) {
+    freedll #dll;
+    endmacro;                                // キャンセル
+}
+
+if ( result <= 4 ) {
+    //--- 今日の日付を直接挿入（配列は 0 始まりなので -1 する）---
+    insert $InsDate[ result - 1 ];
+}
+else {
+    //--- 「昨日」「明日」→ ±1日した候補のサブメニューを出す ---
+    if ( result == 6 ) {
+        #inc = -1;                           // 昨日（-1日）
+    }
+    else {
+        #inc = 1;                            // 明日（+1日）
+    }
+
+    // 3つ目の引数(=日)に #inc を渡して日付をずらす
+    $InsDate[0] = dllfuncstr( #dll, "GetDateString",   "yyyy/mm/dd",      0, 0, #inc );
+    $InsDate[1] = dllfuncstr( #dll, "GetDateString",   "yyyy/mm/dd(ddd)", 0, 0, #inc );
+    $InsDate[2] = dllfuncstr( #dll, "GetDateString",   "gge年m月d日 dddd", 0, 0, #inc );
+
+    menuarray $InsDate, 3;
+    if ( result > 0 ) {
+        insert $InsDate[ result - 1 ];
+    }
+}
+
+freedll #dll;
+endmacro;

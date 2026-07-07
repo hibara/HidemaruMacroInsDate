@@ -1,0 +1,46 @@
+//======================================================================
+// 
+// 日付時刻挿入マクロ（DLL付属拡張書式版）
+// 
+// ※このマクロを動作させるには付属のinsdate.dllが必要です。
+//   カスタマイズ方法や挿入日時の書式は、同梱のreadme.txtにあります。
+//   詳しくはそちらをご覧ください。
+// 
+//======================================================================
+
+#dll = loaddll("insdate.dll");
+if( #dll == 0 ) {
+	message "insdate.dllのロードに失敗しました。";
+	endmacro;
+}
+
+$InsDate[0] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0);                 //今日の日付
+$InsDate[1] = dllfuncstr( #dll, "GetDateString", "yy-mm-dd", 0);                   //　　〃
+$InsDate[2] = dllfuncstr( #dll, "GetDateString", "yy年mm月dd日(ddd)", 0);          //　　〃
+$InsDate[3] = dllfuncstr( #dll, "GetDateString", "GGe年m月d日　dddd", 0);          //　　〃　　（和暦）
+$InsDate[4] = dllfuncstr( #dll, "GetDateString", "a/p hh:nn:ss", 0);               //現在時刻
+$InsDate[5] = dllfuncstr( #dll, "GetDateString", "ampm h時n分s秒", 0);             //現在時刻
+$InsDate[6] = "\x01";	//区切り線
+$InsDate[7] = dllfuncstr( #dll, "GetDateStringEn", "yyyy/mm/dd(ddd)", 0, 0, 0);    //今日の日付（英語表記）
+$InsDate[8] = dllfuncstr( #dll, "GetDateStringEn", "mmmm-dd-yy(dddd)", 0);         //　　〃　　
+$InsDate[9] = dllfuncstr( #dll, "GetDateStringEn", "a/p hh:nn:ss", 0);             //現在時刻（英語表記）
+$InsDate[10] = dllfuncstr( #dll, "GetDateStringEn", "ampm h時n分s秒", 0);          //　　〃　　
+$InsDate[11] = "\x01";	//区切り線
+$InsDate[12] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0, 0, 1);          //明日の日付
+$InsDate[13] = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd", 0, 0, -1);         //昨日の日付
+$InsDate[14] = dllfuncstr( #dll, "GetDateString", "hh:nn:ss", 0, 0, 0, 12, 0, 0);  //12時間後
+$InsDate[15] = dllfuncstr( #dll, "GetDateString", "hh:nn:ss", 0, 0, 0, 0, 0, -30); //30秒前
+
+//ポップアップメニュー表示
+menuarray $InsDate, 16;	//←上で指定したメニューの数を入力
+
+#num = result - 1;
+
+if ( result > 0 ){
+	insert $InsDate[#num];	//選択された日時を挿入
+}
+
+freedll #dll;
+
+endmacro;
+

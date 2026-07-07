@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2012/01/31 12:34:45.485.cpp,C:\Users\redpolka\Documents\RAD Studio\Projects\Unit1.cpp=C:\Users\redpolka\Documents\Dropbox\programs\insdate\Unit1.cpp</Transaction>
+    <Transaction>2012/01/31 12:34:45.485.h,C:\Users\redpolka\Documents\RAD Studio\Projects\Unit1.h=C:\Users\redpolka\Documents\Dropbox\programs\insdate\Unit1.h</Transaction>
+    <Transaction>2012/01/31 12:34:45.485.dfm,C:\Users\redpolka\Documents\RAD Studio\Projects\Unit1.dfm=C:\Users\redpolka\Documents\Dropbox\programs\insdate\Unit1.dfm</Transaction>
+    <Transaction>2012/01/31 12:34:52.820.cbproj,C:\Users\redpolka\Documents\RAD Studio\Projects\Project1.cbproj=C:\Users\redpolka\Documents\Dropbox\programs\insdate\MenuBuilder.cbproj</Transaction>
+  </Transactions>
+</BorlandProject>

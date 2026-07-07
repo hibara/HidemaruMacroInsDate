@@ -1,0 +1,31 @@
+//======================================================================
+// 
+// 日付時刻挿入マクロ（DLL付属拡張書式版）
+// 
+// ※このマクロを動作させるには付属のinsdate.dllが必要です。
+//   カスタマイズ方法や挿入日時の書式は、同梱のreadme.txtにあります。
+//   詳しくはそちらをご覧ください。
+// 
+//======================================================================
+
+#dll = loaddll("insdate.dll");
+if( #dll == 0 ) {
+	message "insdate.dllのロードに失敗しました。";
+	endmacro;
+}
+
+//今日の日付
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "yyyy/mm/dd(ddd)", 0);    // 2011/04/20(水)
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "yyyy/mm/dd(ddd)", 0);  // 2011/04/20(Wed)
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "c", 0);                  // 3/7/2012 10:08:07 PM
+//$InsDateString = dllfuncstr( #dll, "GetDateString", "ampm h時n分s秒", 0);     // 午後 0時1分30秒
+$InsDateString = dllfuncstr( #dll, "GetDateString", "ggee年m月d日　dddd", 0);  // 平成23年4月20日　水曜日
+
+//上記で取得した文字列を秀丸エディタのカーソル位置に挿入
+insert $InsDateString;
+
+//DLLファイルの解放
+freedll #dll;
+
+endmacro;
+

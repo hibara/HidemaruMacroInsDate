@@ -1,0 +1,85 @@
+﻿//======================================================================
+//
+//  InsertDateEn.mac -- Insert a single date at the caret (minimal English sample)
+//
+//  Inserts "today's date" once at the caret position. The simplest usage
+//  pattern. To change how the date is formatted, edit only the single
+//  $InsDateString = ... line further below.
+//
+//  Requirements: insdate32.dll / insdate64.dll (bundled). Both DLLs and
+//  this macro (.mac) must live in the same folder (your Hidemaru macro
+//  folder).
+//
+//  Full reference (format tokens, function list) is in Help.txt. Help.txt
+//  and the LICENSE file are installed into:
+//
+//        %LOCALAPPDATA%\HiBARA_Software\HidemaruInsDateMacro\
+//
+//  Paste that path into Explorer's address bar and press Enter to open
+//  the folder (Explorer expands the environment variable automatically).
+//  Expanded example:
+//        C:\Users\<user>\AppData\Local\HiBARA_Software\HidemaruInsDateMacro\
+//
+//======================================================================
+
+
+//----------------------------------------------------------------------
+// 1. Pick the DLL matching Hidemaru's bitness (32 or 64)
+//
+//    Keep both DLLs alongside this macro; the check below auto-selects
+//    the right one. (Bit 0x00080000 of `platform` is set on 64-bit
+//    Hidemaru.)
+//----------------------------------------------------------------------
+$dllPath = currentmacrodirectory + "\\";
+if ((platform & 0x00080000) != 0) {
+    $dllPath = $dllPath + "insdate64.dll";   // 64-bit Hidemaru
+} else {
+    $dllPath = $dllPath + "insdate32.dll";   // 32-bit Hidemaru
+}
+
+// Abort if the DLL is missing (typical setup mistake)
+if (!existfile($dllPath)) {
+    message "DLL not found.\n\n" + $dllPath;
+    endmacro;
+}
+
+// Load the DLL
+#dll = loaddll($dllPath);
+if (#dll == 0) {
+    message "Failed to load the DLL.\n\n" + $dllPath;
+    endmacro;
+}
+
+
+//----------------------------------------------------------------------
+// 2. Build the date string
+//
+//    dllfuncstr( #dll, "GetDateStringEn", "<format>", Year,Month,Day,Hour,Minute,Second )
+//      * The 3rd argument is the output format. Change it to taste.
+//      * Year/Month/Day/Hour/Minute/Second are DELTAS from "now" (not
+//        absolute values). 0 (or omitted) means "no change".
+//        Examples:  ... , 0,0,1  -> tomorrow    ... , 0,0,-1  -> yesterday
+//      * "GetDateStringEn" forces U.S. English locale for weekday and
+//        month names (ddd/dddd/mmm/mmmm). Use "GetDateString" for the
+//        system default locale.
+//
+//    Format examples (uncomment ONE line to activate):
+//      * Right-side comments show the result on Mon, Jul 6, 2026
+//----------------------------------------------------------------------
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "yyyy-mm-dd", 0 );                 // 2026-07-06 (ISO-like)
+$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "yyyy/mm/dd(ddd)", 0 );            // 2026/07/06(Mon)
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "mm/dd/yyyy", 0 );                 // 07/06/2026 (US)
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "dd/mm/yyyy", 0 );                 // 06/07/2026 (UK/EU)
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "ddd, mmm d, yyyy", 0 );           // Mon, Jul 6, 2026
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "dddd, mmmm d, yyyy", 0 );         // Monday, July 6, 2026
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "hh:nn:ss", 0 );                   // 22:08:07 (current time, 24h)
+//$InsDateString = dllfuncstr( #dll, "GetDateStringEn", "h:nn:ss ampm", 0 );               // 10:08:07 PM (12-hour)
+
+
+//----------------------------------------------------------------------
+// 3. Insert at the caret, free the DLL, and finish
+//----------------------------------------------------------------------
+insert $InsDateString;
+
+freedll #dll;
+endmacro;
